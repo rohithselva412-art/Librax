@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LibraX | Smart Digital Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">📚 <span>LibraX</span></div>
+  <nav>
+    <a href="#home" data-page="home">Home</a>
+    <a href="#books" data-page="books">Books</a>
+    <a href="#articles" data-page="articles">Articles</a>
+    <a href="#shelf" data-page="shelf">Smart Shelf</a>
+    <a href="#library" data-page="library">My Library</a>
+    <a href="#about" data-page="about">About</a>
+  </nav>
+  <button id="loginBtn" class="login-btn" onclick="showLogin()">Student Login</button>
+</header>
+
+<main>
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="hero-content">
+      <span class="eyebrow">SMART DIGITAL LIBRARY</span>
+      <h1>Discover your next <span>great read.</span></h1>
+      <p>Search books, explore knowledge, locate shelves and get help from your personal LibraX Guide.</p>
+      <div class="search-box">
+        <input id="homeSearch" type="search" placeholder="Search title, author, category or ISBN...">
+        <button onclick="searchFromHome()">🔎 Search</button>
+      </div>
+      <div class="quick-searches">
+        <button onclick="quickSearch('Computer Science')">Computer Science</button>
+        <button onclick="quickSearch('Science')">Science</button>
+        <button onclick="quickSearch('Novel')">Novels</button>
+        <button onclick="quickSearch('Self Development')">Self Development</button>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="orb">📖</div>
+      <h3>Knowledge is always open.</h3>
+      <p>One smart catalogue. Hundreds of possibilities.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div><strong id="bookCount">46</strong><span>Books</span></div>
+    <div><strong>5</strong><span>Floors</span></div>
+    <div><strong>12+</strong><span>Categories</span></div>
+    <div><strong>24/7</strong><span>Digital Access</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><div><span class="eyebrow">FEATURED</span><h2>Popular picks</h2></div><button class="text-btn" onclick="navigateTo('books')">View all →</button></div>
+    <div id="featuredBooks" class="book-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><div><span class="eyebrow">EXPLORE</span><h2>Browse categories</h2></div></div>
+    <div id="categories" class="category-grid"></div>
+  </div>
+
+  <div class="knowledge-banner">
+    <div><span class="eyebrow">LIBRAX GUIDE</span><h2>Not sure what to read?</h2><p>Ask the Guide to find books by mood, subject, author or category.</p></div>
+    <button onclick="openGuide()">Ask LibraX Guide ✨</button>
+  </div>
+</section>
+
+<section id="books" class="page">
+  <div class="page-header"><span class="eyebrow">CATALOGUE</span><h1>Explore the library</h1><p>Find a book and see exactly where it lives.</p></div>
+  <div class="filters">
+    <input id="bookSearch" type="search" placeholder="Search books..." oninput="renderBooks()">
+    <select id="categoryFilter" onchange="renderBooks()"><option value="">All categories</option></select>
+    <select id="statusFilter" onchange="renderBooks()">
+      <option value="">All statuses</option><option value="available">Available</option><option value="borrowed">Borrowed</option><option value="reserved">Reserved</option><option value="soon">Coming soon</option>
+    </select>
+  </div>
+  <div id="bookResults" class="book-grid"></div>
+</section>
+
+<section id="details" class="page">
+  <div id="bookDetails"></div>
+</section>
+
+<section id="articles" class="page">
+  <div class="page-header"><span class="eyebrow">KNOWLEDGE HUB</span><h1>Articles & insights</h1><p>Short reads for curious minds.</p></div>
+  <div class="article-grid">
+    <article><span>COMPUTER SCIENCE</span><h3>Why algorithms matter</h3><p>Algorithms turn problems into repeatable, efficient solutions. They are the quiet engines behind modern software.</p><button onclick="guideArticle('algorithms')">Ask Guide →</button></article>
+    <article><span>SELF DEVELOPMENT</span><h3>The science of small habits</h3><p>Small consistent actions can compound into meaningful changes in skill, productivity and learning.</p><button onclick="guideArticle('habits')">Ask Guide →</button></article>
+    <article><span>SCIENCE</span><h3>Reading the universe</h3><p>From stars to black holes, scientific books give us tools for understanding objects far beyond our reach.</p><button onclick="guideArticle('science')">Ask Guide →</button></article>
+    <article><span>HISTORY</span><h3>How humans became historians</h3><p>Stories, records and archaeology help us reconstruct the path from ancient societies to the present.</p><button onclick="guideArticle('history')">Ask Guide →</button></article>
+  </div>
+</section>
+
+<section id="shelf" class="page">
+  <div class="page-header"><span class="eyebrow">SMART SHELF</span><h1>Find your shelf</h1><p>Choose a floor to see the library map.</p></div>
+  <div class="floor-tabs">
+    <button class="active" onclick="showFloor(1,this)">Floor 1</button><button onclick="showFloor(2,this)">Floor 2</button><button onclick="showFloor(3,this)">Floor 3</button><button onclick="showFloor(4,this)">Floor 4</button><button onclick="showFloor(5,this)">Floor 5</button>
+  </div>
+  <div id="shelfMap" class="shelf-map"></div>
+</section>
+
+<section id="library" class="page">
+  <div class="page-header"><span class="eyebrow">MY LIBRARY</span><h1>Your reading dashboard</h1><p>Track your saved and borrowed books.</p></div>
+  <div class="dashboard-grid">
+    <div class="dash-card"><span>📚</span><strong id="savedCount">0</strong><small>Saved books</small></div>
+    <div class="dash-card"><span>📖</span><strong>2</strong><small>Currently borrowed</small></div>
+    <div class="dash-card"><span>⏳</span><strong>1</strong><small>Reservation</small></div>
+    <div class="dash-card"><span>⭐</span><strong>4.8</strong><small>Reading score</small></div>
+  </div>
+  <div class="saved-area"><h2>Saved books</h2><div id="savedBooks" class="book-grid"></div></div>
+</section>
+
+<section id="about" class="page">
+  <div class="page-header"><span class="eyebrow">ABOUT LIBRAX</span><h1>A library built for curious minds.</h1><p>LibraX combines a modern catalogue, smart shelf navigation and a friendly digital guide.</p></div>
+  <div class="about-grid">
+    <div><h2>What makes it smart?</h2><p>Instead of only listing books, LibraX helps students discover what to read, understand availability and locate books quickly.</p></div>
+    <div><h2>Built for students</h2><p>Clean navigation, quick search, category discovery and a personal library make everyday reading simpler.</p></div>
+    <div><h2>Designed to grow</h2><p>The catalogue can be expanded with authentication, real-time inventory, borrowing history and a real AI assistant.</p></div>
+  </div>
+</section>
+</main>
+
+<div id="guide" class="guide">
+  <div class="guide-head"><div><strong>✨ LibraX Guide</strong><small>Your library companion</small></div><button onclick="closeGuide()">×</button></div>
+  <div id="guideMessages" class="guide-messages"><div class="bot-message">Hi Boss! 👋 I’m your LibraX Guide. Tell me what you want to read or find.</div></div>
+  <div class="guide-suggestions">
+    <button onclick="askGuide('Find me a computer science book')">💻 CS book</button>
+    <button onclick="askGuide('What should I read for self development?')">🌱 Self growth</button>
+    <button onclick="askGuide('Where is Atomic Habits?')">📍 Locate book</button>
+  </div>
+  <div class="guide-input"><input id="guideInput" placeholder="Ask LibraX Guide..." onkeydown="if(event.key==='Enter') sendGuide()"><button onclick="sendGuide()">➤</button></div>
+</div>
+<button class="guide-toggle" onclick="openGuide()">✨</button>
+
+
+<div id="authModal" class="auth-modal" onclick="if(event.target===this)closeAuth()">
+  <div class="auth-card">
+    <button class="auth-close" onclick="closeAuth()">×</button>
+    <h2>🎓 Student Login</h2>
+    <p id="authMsg" class="auth-msg">Sign in to sync your saved books.</p>
+    <input id="authEmail" type="email" placeholder="Email" autocomplete="email">
+    <input id="authPassword" type="password" placeholder="Password (min 6 characters)" autocomplete="current-password" onkeydown="if(event.key==='Enter')authSignIn()">
+    <div class="auth-actions">
+      <button class="primary" onclick="authSignIn()">Sign in</button>
+      <button class="secondary" onclick="authSignUp()">Create account</button>
+    </div>
+  </div>
+</div>
+
+<footer><div><strong>📚 LibraX</strong><p>Smart reading. Smarter discovery.</p></div><p>© 2026 LibraX Smart Library</p></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
